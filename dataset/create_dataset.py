@@ -12,16 +12,14 @@ def tokenize_text_for_input(text):
     
     conversation = [{"role": "user", "content": text}]
     tokens = tokenizer.apply_chat_template(conversation, add_generation_prompt=True, tokenize=True)
-    tokens = [tokens[0]] + tokens[4:-4]
     return tokens
 
 def tokenize_text_for_output(text):
     if pd.isna(text):
         return []
     
-    conversation = [{"role": "user", "content": text}]
+    conversation = [{"role": "assistant", "content": text}]
     tokens = tokenizer.apply_chat_template(conversation, add_generation_prompt=True, tokenize=True)
-    tokens = tokens[4:-5] + [2]
     return tokens
 
 def tokens_to_json(tokens):

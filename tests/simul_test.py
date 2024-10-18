@@ -34,7 +34,7 @@ lenght = 50
 num_vectors = 32
 
 min_tokens = 0
-max_tokens = 64
+max_tokens = None
 
 file_path = '../dataset/bbc-news-summary-local.csv'
 csv = CSV_Assist()
@@ -54,7 +54,7 @@ def running(engine, finished_log, last_sampled_log):
         request_outputs, outputs, request = engine.simulate_step(csv)
         cpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.CPU)
         gpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.GPU)
-        print(f'CPU_Rate : {cpu_rate}, GPU_Rate : {gpu_rate}')
+        #print(f'CPU_Rate : {cpu_rate}, GPU_Rate : {gpu_rate}')
 
         request_id_of_ModelRequest = []
         parent_seq_id_of_sample = []
@@ -63,7 +63,7 @@ def running(engine, finished_log, last_sampled_log):
         if len(request.finished_requests_ids) != 0:
             finished_log.extend(request.finished_requests_ids)
 
-        print(len(request.blocks_to_swap_in), len(request.blocks_to_swap_out), sep='\t')
+        #print(len(request.blocks_to_swap_in), len(request.blocks_to_swap_out), sep='\t')
 
         if request.last_sampled_token_ids is not None:
             last_sampled_log.append(request.last_sampled_token_ids)

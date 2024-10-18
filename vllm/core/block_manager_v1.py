@@ -122,6 +122,7 @@ class CachedBlockAllocator(BlockAllocatorBase):
 
         if block_hash in self.cached_blocks:
             self.cache_metric_data.query(hit=True)
+            self.cached_blocks[block_hash].freq += 1
         else:
             self.cache_metric_data.query(hit=False)
             self.cached_blocks[block_hash] = self.allocate_block(

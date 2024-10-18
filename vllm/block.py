@@ -24,6 +24,7 @@ class PhysicalTokenBlock:
         self.num_hashed_tokens = num_hashed_tokens
 
         self.ref_count = 0
+        self.freq = 0
         self.last_accessed = DEFAULT_LAST_ACCESSED_TIME
 
         self.computed = False
@@ -34,7 +35,8 @@ class PhysicalTokenBlock:
                 f'num_hashed_tokens={self.num_hashed_tokens}, '
                 f'ref_count={self.ref_count}, '
                 f'last_accessed={self.last_accessed}, '
-                f'computed={self.computed})')
+                f'computed={self.computed}, '
+                f'freq={self.freq})')
 
 
 class BlockTable:

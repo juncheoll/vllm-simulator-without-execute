@@ -1402,7 +1402,7 @@ class LLMEngine:
         '''
         return request_outputs, output, execute_model_req
 
-    def simulate_step(self, csv):
+    def simulate_step(self, csv, execute=False):
         self.it += 1
         
         seq_group_metadata_list, scheduler_outputs = self.scheduler[0].schedule()
@@ -1422,6 +1422,9 @@ class LLMEngine:
             #TODO::simulate_execute_time measure
             output = self.simulate_execute_model(
                 csv, execute_model_req=execute_model_req)
+            if execute:
+                self.model_executor.execute_model(
+                    execute_model_req=execute_model_req)
         else:
             output = []
             
@@ -1776,6 +1779,9 @@ class CSV_Assist:
     df: DataFrame
     tokenizer = LlamaTokenizer.from_pretrained('meta-llama/Llama-2-7b-chat-hf', padding_side="left")
     
+    def __init__(self, is_chat: bool = False):
+        self.is_chat = is_chat
+    
     def read_csv(self, file_path):
         self.df = pd.read_csv(file_path, index_col='Request Id')
         self.df['Input_Tokens'] = self.df['Input_Tokens'].apply(json.loads)
@@ -1804,6 +1810,9 @@ class CSV_Assist:
     
     def get_num_rows(self):
         return len(self.df)
+    
+    def get_rows_id(self):
+        return self.df['Request Id'].to_list()
     
     def get_rows_input_text(self):
         return self.df['Input_Content'].to_list()

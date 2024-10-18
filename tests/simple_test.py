@@ -31,10 +31,10 @@ def log_message(message):
 start = 1
 end = 29889
 lenght = 50
-num_vectors = 32
+num_vectors = 128
 
 min_tokens = 0
-max_tokens = 64
+max_tokens = 128
 
 
 

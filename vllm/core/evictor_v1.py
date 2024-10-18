@@ -1,6 +1,11 @@
 import enum
 from abc import ABC, abstractmethod
 from typing import OrderedDict
+from sortedcontainers import SortedDict
+
+import threading
+import time
+
 
 from vllm.block import PhysicalTokenBlock
 
@@ -10,6 +15,8 @@ class EvictionPolicy(enum.Enum):
        Evictor subclass.
     """
     LRU = enum.auto()
+    LFU = enum.auto()
+    ARC = enum.auto()
 
 
 class Evictor(ABC):
@@ -60,6 +67,20 @@ class LRUEvictor(Evictor):
 
     def __init__(self):
         self.free_table: OrderedDict[int, PhysicalTokenBlock] = OrderedDict()
+        
+        self.num_evict = 0
+        self.num_add = 0
+        self.num_remove = 0
+        
+        self.thread = threading.Thread(target=self.log)
+        #self.thread.start()
+        
+    def log(self):
+        while True:
+            time.sleep(0.1)
+            print(f'LRU logging : evict : {self.num_evict}, '
+                f'add : {self.num_add}, '
+                f'remove : {self.num_remove}')
 
     def __contains__(self, block_hash: int) -> bool:
         return block_hash in self.free_table
@@ -68,6 +89,7 @@ class LRUEvictor(Evictor):
         if len(self.free_table) == 0:
             raise ValueError("No usable cache memory left")
 
+        self.num_evict += 1
         evicted_block = next(iter(self.free_table.values()))
         # The blocks with the lowest timestamps should be placed consecutively
         # at the start of OrderedDict. Loop through all these blocks to
@@ -84,12 +106,14 @@ class LRUEvictor(Evictor):
         return evicted_block
 
     def add(self, block: PhysicalTokenBlock):
+        self.num_add += 1
         self.free_table[block.block_hash] = block
 
     def remove(self, block_hash: int) -> PhysicalTokenBlock:
         if block_hash not in self.free_table:
             raise ValueError(
                 "Attempting to remove block that's not in the evictor")
+        self.num_remove += 1
         block: PhysicalTokenBlock = self.free_table[block_hash]
         self.free_table.pop(block_hash)
         return block
@@ -99,8 +123,178 @@ class LRUEvictor(Evictor):
         return len(self.free_table)
 
 
+class LFUEvictor(Evictor):
+
+    def __init__(self):
+        self.block_table = {}  # block_hash -> PhysicalTokenBlock
+        self.freq_map = SortedDict()  # freq -> OrderedDict[block_hash, PhysicalTokenBlock]
+
+        self.num_evict = 0
+        self.num_add = 0
+        self.num_remove = 0
+        
+        self.thread = threading.Thread(target=self.log)
+        #self.thread.start()
+        
+    def log(self):
+        while True:
+            time.sleep(0.1)
+            print(f'LFU logging : evict : {self.num_evict}, '
+                f'add : {self.num_add}, '
+                f'remove : {self.num_remove}')
+        
+    def __contains__(self, block_hash: int) -> bool:
+        return block_hash in self.block_table
+
+    def evict(self) -> PhysicalTokenBlock:
+        if not self.block_table:
+            raise ValueError("No usable cache memory left")
+
+        self.num_evict += 1
+        
+        min_freq = self.freq_map.peekitem(0)[0]
+        # Evict the least frequently used block, using min_freq
+        evicted_block_hash, evicted_block = self.freq_map[min_freq].popitem(last=False)
+
+        if not self.freq_map[min_freq]:
+            del self.freq_map[min_freq]
+
+        del self.block_table[evicted_block_hash]
+        evicted_block.computed = False
+        return evicted_block
+
+    def add(self, block: PhysicalTokenBlock):
+        self.num_add += 1
+        
+        self.block_table[block.block_hash] = block
+        freq = block.freq
+        if freq not in self.freq_map:
+            self.freq_map[freq] = OrderedDict()
+        self.freq_map[freq][block.block_hash] = block
+
+    def remove(self, block_hash: int) -> PhysicalTokenBlock:
+        if block_hash not in self.block_table:
+            raise ValueError("Attempting to remove block that's not in the evictor")
+        
+        self.num_remove += 1
+        
+        block = self.block_table.pop(block_hash)
+        freq = block.freq
+        self.freq_map[freq].pop(block_hash)
+        if not self.freq_map[freq]:
+            del self.freq_map[freq]
+        
+        return block
+
+    @property
+    def num_blocks(self) -> int:
+        return len(self.block_table)
+    
+    
+class ARCEvictor(Evictor):
+    """
+    Adaptive Replacement Cache (ARC) implementation.
+    This evicts blocks using a combination of recent and frequent access patterns,
+    dynamically balancing between LRU and LFU to improve cache hit ratios.
+    """
+
+    def __init__(self):
+        self.block_table = {}  # block_hash -> PhysicalTokenBlock
+        self.t1 = OrderedDict()  # LRU for recent blocks
+        self.b1 = OrderedDict()  # Ghost entries for t1 evictions
+        self.t2 = OrderedDict()  # LFU for frequent blocks
+        self.b2 = OrderedDict()  # Ghost entries for t2 evictions
+        self.target_t1_size = 0  # Target size for t1 (adaptively adjusted)
+
+    def __contains__(self, block_hash: int) -> bool:
+        return block_hash in self.block_table
+
+    def evict(self) -> PhysicalTokenBlock:
+        if not self.block_table:
+            raise ValueError("No usable cache memory left")
+
+        if len(self.t1) > self.target_t1_size:
+            # Evict from t1
+            evicted_block_hash, evicted_block = self.t1.popitem(last=False)
+            self.b1[evicted_block_hash] = evicted_block
+        else:
+            # Evict from t2
+            evicted_block_hash, evicted_block = self.t2.popitem(last=False)
+            self.b2[evicted_block_hash] = evicted_block
+
+        del self.block_table[evicted_block_hash]
+        evicted_block.computed = False
+        return evicted_block
+
+    def add(self, block: PhysicalTokenBlock):
+        block_hash = block.block_hash
+
+        if block_hash in self.t1:
+            # Promote to t2
+            self.t1.pop(block_hash)
+            self.t2[block_hash] = block
+        elif block_hash in self.b1:
+            # Increase target_t1_size since a block from b1 is re-added
+            self.target_t1_size = min(self.target_t1_size + 1, len(self.block_table))
+            self.b1.pop(block_hash)
+            self.t2[block_hash] = block
+        elif block_hash in self.t2:
+            # Update t2
+            self.t2.move_to_end(block_hash)
+        elif block_hash in self.b2:
+            # Decrease target_t1_size since a block from b2 is re-added
+            self.target_t1_size = max(self.target_t1_size - 1, 0)
+            self.b2.pop(block_hash)
+            self.t2[block_hash] = block
+        else:
+            # Add to t1
+            if len(self.block_table) >= len(self.block_table):
+                self.evict()
+            self.t1[block_hash] = block
+
+        self.block_table[block_hash] = block
+
+    def remove(self, block_hash: int) -> PhysicalTokenBlock:
+        if block_hash not in self.block_table:
+            raise ValueError("Attempting to remove block that's not in the evictor")
+
+        block = self.block_table.pop(block_hash)
+        if block_hash in self.t1:
+            self.t1.pop(block_hash)
+        elif block_hash in self.t2:
+            self.t2.pop(block_hash)
+        elif block_hash in self.b1:
+            self.b1.pop(block_hash)
+        elif block_hash in self.b2:
+            self.b2.pop(block_hash)
+
+        return block
+
+    def get(self, block_hash: int) -> PhysicalTokenBlock:
+        if block_hash not in self.block_table:
+            raise ValueError("Block not found in the evictor")
+
+        block = self.block_table[block_hash]
+        if block_hash in self.t1:
+            # Promote to t2
+            self.t1.pop(block_hash)
+            self.t2[block_hash] = block
+        elif block_hash in self.t2:
+            # Update t2
+            self.t2.move_to_end(block_hash)
+        return block
+
+    @property
+    def num_blocks(self) -> int:
+        return len(self.block_table)
+    
+
 def make_evictor(eviction_policy: EvictionPolicy) -> Evictor:
     if eviction_policy == EvictionPolicy.LRU:
         return LRUEvictor()
+    elif eviction_policy == EvictionPolicy.LFU:
+        return LFUEvictor()
+    elif eviction_policy == EvictionPolicy.ARC:
+        return ARCEvictor()
     else:
         raise ValueError(f"Unknown cache eviction policy: {eviction_policy}")
