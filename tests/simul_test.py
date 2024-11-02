@@ -41,17 +41,18 @@ csv = CSV_Assist()
 csv.read_csv(file_path)
 
 def create_test_prompts() -> List[Tuple[List[int], SamplingParams]]:
-    num_request = csv.get_num_rows()
-    vectors = csv.get_rows_input_tokens()
-
-    sampling_params = SamplingParams(temperature=0.8, top_p=0.95, min_tokens=min_tokens, max_tokens=max_tokens)
+    #num_request = csv.get_num_rows()
+    #vectors = csv.get_rows_input_tokens()
+    vectors = generate_vectors(start, end, 100, 100)
+    sampling_params = SamplingParams(temperature=0, min_tokens=min_tokens, max_tokens=max_tokens)
     return [(TokensPrompt({'prompt_token_ids':vector}), sampling_params) for vector in vectors]
 
 
 def running(engine, finished_log, last_sampled_log):
     while engine.has_unfinished_requests():
 
-        request_outputs, outputs, request = engine.simulate_step(csv)
+        #request_outputs, outputs, request = engine.simulate_step(csv, True)
+        request_outputs, outputs, request = engine.step()
         cpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.CPU)
         gpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.GPU)
         #print(f'CPU_Rate : {cpu_rate}, GPU_Rate : {gpu_rate}')
@@ -104,20 +105,34 @@ def process_requests(engine: LLMEngine,
     finished_log = []
     last_sampled_log = []
     request_id = 1
-
+    '''
     while test_prompts:
         vector, sampling_params = test_prompts.pop(0)
         engine.add_request(str(request_id), vector, sampling_params)
         request_id += 1
-
-    running(engine, finished_log, last_sampled_log)
-
+        '''
+        
+    '''
+    vector1, sampling_params = test_prompts.pop(0)
+    vector2, _ = test_prompts.pop(0)
+    '''
+    
+    test_prompts = test_prompts[:20]
+    for i in range(1, 21):
+        vector, sampling_params = test_prompts[0]
+        engine.add_request(str(i), vector, sampling_params)
+        running(engine, finished_log, last_sampled_log)
+        
+    
+    
     print(f'finished_log : {finished_log}')
     print(f'last_sampled_log : {last_sampled_log}')
 
 def initialize_engine(args: argparse.Namespace) -> LLMEngine:
     """Initialize the LLMEngine from the command line arguments."""
-    engine_args = EngineArgs(model="meta-llama/Llama-2-7b-chat-hf", # "facebook/opt-125m" 
+    engine_args = EngineArgs(#model="meta-llama/Llama-2-7b-chat-hf", # "facebook/opt-125m" 
+                             #model='facebook/opt-1.3b',
+                             model='lmsys/longchat-7b-16k',
                              dtype=torch.bfloat16,
                              trust_remote_code=True,
                              quantization="bitsandbytes",
@@ -126,10 +141,11 @@ def initialize_engine(args: argparse.Namespace) -> LLMEngine:
                              #quantization_param_path="./tests/fp8_kv/llama2-7b-fp8-kv/kv_cache_scales.json",
                              swap_space=16,
                              preemption_mode='swap',
+                             max_model_len=6048
                              )
-    engine_args.gpu_memory_utilization = 0.7
+    engine_args.gpu_memory_utilization = 0.9
     engine_args.enable_prefix_caching = True
-    #engine_args.max_num_seqs = 32
+    engine_args.max_num_seqs = 1
 
     return LLMEngine.from_engine_args(engine_args)
 
@@ -140,7 +156,7 @@ def main(args: argparse.Namespace):
     stat_logger = engine.stat_loggers
     stat_logger_logging = stat_logger.get('logging')
     stat_logger_prometheus = stat_logger.get('prometheus')
-    stat_logger_logging.local_interval = 10
+    stat_logger_logging.local_interval = 100
 
     test_prompts = create_test_prompts()
     start_time = time.time()

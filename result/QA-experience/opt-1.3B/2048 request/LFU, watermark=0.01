@@ -1,0 +1,204 @@
+WARNING 10-19 21:28:51 config.py:604] Possibly too large swap space. 16.00 GiB out of the 31.21 GiB total CPU memory is allocated for the swap space.
+INFO 10-19 21:28:51 llm_engine.py:185] Initializing an LLM engine (v0.5.5) with config: model='facebook/opt-1.3b', speculative_config=None, tokenizer='facebook/opt-1.3b', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=2048, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=facebook/opt-1.3b, use_v2_block_manager=False, enable_prefix_caching=True)
+/home/th6re8e/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+INFO 10-19 21:28:52 model_runner.py:879] Starting to load model facebook/opt-1.3b...
+INFO 10-19 21:28:52 weight_utils.py:236] Using model weights format ['*.bin']
+Loading pt checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+/usr/local/lib/python3.10/dist-packages/vllm/model_executor/model_loader/weight_utils.py:416: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(bin_file, map_location="cpu")
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.63s/it]
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.63s/it]
+
+INFO 10-19 21:28:54 model_runner.py:890] Loading model weights took 2.4509 GB
+INFO 10-19 21:28:55 gpu_executor.py:121] # GPU blocks: 1896, # CPU blocks: 5461
+INFO 10-19 21:29:02 model_runner.py:1181] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 10-19 21:29:02 model_runner.py:1185] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 10-19 21:29:10 model_runner.py:1300] Graph capturing finished in 8 secs.
+INFO 10-19 21:29:10 block_manager_v1.py:264] Automatic prefix caching is enabled.
+created LFUEvictorV2
+created LFUEvictorV2
+watermark:0.01
+INFO 10-19 21:29:11 metrics.py:351] Avg prompt throughput: 20248.6 tokens/s, Avg generation throughput: 111.3 tokens/s, Running: 118 reqs, Swapped: 0 reqs, Pending: 1930 reqs, GPU KV cache usage: 58.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:11 metrics.py:367] Prefix cache hit rate: GPU: 20.66%, CPU: 0.00%
+WARNING 10-19 21:29:12 scheduler.py:1242] Sequence group 86951 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=1
+INFO 10-19 21:29:12 metrics.py:351] Avg prompt throughput: 19204.9 tokens/s, Avg generation throughput: 1179.5 tokens/s, Running: 220 reqs, Swapped: 9 reqs, Pending: 1819 reqs, GPU KV cache usage: 99.3%, CPU KV cache usage: 2.2%.
+INFO 10-19 21:29:12 metrics.py:367] Prefix cache hit rate: GPU: 30.20%, CPU: 6.30%
+INFO 10-19 21:29:13 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2973.7 tokens/s, Running: 195 reqs, Swapped: 34 reqs, Pending: 1819 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 7.8%.
+INFO 10-19 21:29:13 metrics.py:367] Prefix cache hit rate: GPU: 28.27%, CPU: 5.76%
+WARNING 10-19 21:29:14 scheduler.py:1242] Sequence group 693 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=51
+INFO 10-19 21:29:14 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2714.0 tokens/s, Running: 176 reqs, Swapped: 53 reqs, Pending: 1819 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 10.8%.
+INFO 10-19 21:29:14 metrics.py:367] Prefix cache hit rate: GPU: 26.85%, CPU: 13.72%
+INFO 10-19 21:29:15 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2683.8 tokens/s, Running: 158 reqs, Swapped: 71 reqs, Pending: 1819 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 15.0%.
+INFO 10-19 21:29:15 metrics.py:367] Prefix cache hit rate: GPU: 25.41%, CPU: 11.83%
+INFO 10-19 21:29:16 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2795.2 tokens/s, Running: 142 reqs, Swapped: 87 reqs, Pending: 1819 reqs, GPU KV cache usage: 99.4%, CPU KV cache usage: 18.7%.
+INFO 10-19 21:29:16 metrics.py:367] Prefix cache hit rate: GPU: 24.14%, CPU: 13.10%
+WARNING 10-19 21:29:17 scheduler.py:1242] Sequence group 87437 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=101
+INFO 10-19 21:29:17 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2467.4 tokens/s, Running: 128 reqs, Swapped: 101 reqs, Pending: 1819 reqs, GPU KV cache usage: 98.6%, CPU KV cache usage: 22.6%.
+INFO 10-19 21:29:17 metrics.py:367] Prefix cache hit rate: GPU: 23.06%, CPU: 14.35%
+INFO 10-19 21:29:18 metrics.py:351] Avg prompt throughput: 1769.6 tokens/s, Avg generation throughput: 1828.8 tokens/s, Running: 149 reqs, Swapped: 0 reqs, Pending: 1809 reqs, GPU KV cache usage: 97.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:18 metrics.py:367] Prefix cache hit rate: GPU: 25.36%, CPU: 15.03%
+INFO 10-19 21:29:19 metrics.py:351] Avg prompt throughput: 9945.6 tokens/s, Avg generation throughput: 2029.0 tokens/s, Running: 169 reqs, Swapped: 0 reqs, Pending: 1753 reqs, GPU KV cache usage: 95.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:19 metrics.py:367] Prefix cache hit rate: GPU: 28.27%, CPU: 14.92%
+INFO 10-19 21:29:20 metrics.py:351] Avg prompt throughput: 2470.8 tokens/s, Avg generation throughput: 2490.2 tokens/s, Running: 162 reqs, Swapped: 9 reqs, Pending: 1742 reqs, GPU KV cache usage: 99.4%, CPU KV cache usage: 1.9%.
+INFO 10-19 21:29:20 metrics.py:367] Prefix cache hit rate: GPU: 27.95%, CPU: 17.31%
+INFO 10-19 21:29:21 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3071.6 tokens/s, Running: 149 reqs, Swapped: 0 reqs, Pending: 1742 reqs, GPU KV cache usage: 97.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:21 metrics.py:367] Prefix cache hit rate: GPU: 27.51%, CPU: 19.33%
+INFO 10-19 21:29:22 metrics.py:351] Avg prompt throughput: 2569.1 tokens/s, Avg generation throughput: 2783.9 tokens/s, Running: 141 reqs, Swapped: 1 reqs, Pending: 1731 reqs, GPU KV cache usage: 97.4%, CPU KV cache usage: 0.4%.
+INFO 10-19 21:29:22 metrics.py:367] Prefix cache hit rate: GPU: 27.35%, CPU: 19.98%
+INFO 10-19 21:29:23 metrics.py:351] Avg prompt throughput: 2915.0 tokens/s, Avg generation throughput: 2573.1 tokens/s, Running: 134 reqs, Swapped: 0 reqs, Pending: 1714 reqs, GPU KV cache usage: 97.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:23 metrics.py:367] Prefix cache hit rate: GPU: 27.05%, CPU: 19.59%
+INFO 10-19 21:29:24 metrics.py:351] Avg prompt throughput: 8460.1 tokens/s, Avg generation throughput: 2264.2 tokens/s, Running: 150 reqs, Swapped: 1 reqs, Pending: 1668 reqs, GPU KV cache usage: 97.0%, CPU KV cache usage: 0.3%.
+INFO 10-19 21:29:24 metrics.py:367] Prefix cache hit rate: GPU: 27.87%, CPU: 19.99%
+INFO 10-19 21:29:25 metrics.py:351] Avg prompt throughput: 15848.7 tokens/s, Avg generation throughput: 1683.1 tokens/s, Running: 186 reqs, Swapped: 0 reqs, Pending: 1580 reqs, GPU KV cache usage: 99.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:25 metrics.py:367] Prefix cache hit rate: GPU: 29.82%, CPU: 19.99%
+INFO 10-19 21:29:26 metrics.py:351] Avg prompt throughput: 1236.3 tokens/s, Avg generation throughput: 2782.5 tokens/s, Running: 173 reqs, Swapped: 9 reqs, Pending: 1571 reqs, GPU KV cache usage: 99.2%, CPU KV cache usage: 1.6%.
+INFO 10-19 21:29:26 metrics.py:367] Prefix cache hit rate: GPU: 29.49%, CPU: 20.67%
+WARNING 10-19 21:29:27 scheduler.py:1242] Sequence group 87045 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=151
+INFO 10-19 21:29:27 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3163.2 tokens/s, Running: 157 reqs, Swapped: 14 reqs, Pending: 1571 reqs, GPU KV cache usage: 99.7%, CPU KV cache usage: 3.1%.
+INFO 10-19 21:29:27 metrics.py:367] Prefix cache hit rate: GPU: 28.87%, CPU: 22.74%
+INFO 10-19 21:29:28 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3021.3 tokens/s, Running: 141 reqs, Swapped: 22 reqs, Pending: 1571 reqs, GPU KV cache usage: 99.5%, CPU KV cache usage: 5.3%.
+INFO 10-19 21:29:28 metrics.py:367] Prefix cache hit rate: GPU: 28.41%, CPU: 23.92%
+INFO 10-19 21:29:29 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2916.3 tokens/s, Running: 127 reqs, Swapped: 5 reqs, Pending: 1571 reqs, GPU KV cache usage: 96.9%, CPU KV cache usage: 1.4%.
+INFO 10-19 21:29:29 metrics.py:367] Prefix cache hit rate: GPU: 27.98%, CPU: 25.93%
+INFO 10-19 21:29:30 metrics.py:351] Avg prompt throughput: 8378.5 tokens/s, Avg generation throughput: 2125.7 tokens/s, Running: 133 reqs, Swapped: 0 reqs, Pending: 1519 reqs, GPU KV cache usage: 88.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:30 metrics.py:367] Prefix cache hit rate: GPU: 28.30%, CPU: 26.33%
+INFO 10-19 21:29:31 metrics.py:351] Avg prompt throughput: 15404.5 tokens/s, Avg generation throughput: 1467.9 tokens/s, Running: 185 reqs, Swapped: 0 reqs, Pending: 1425 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:31 metrics.py:367] Prefix cache hit rate: GPU: 28.75%, CPU: 26.33%
+INFO 10-19 21:29:33 metrics.py:351] Avg prompt throughput: 1417.7 tokens/s, Avg generation throughput: 2965.6 tokens/s, Running: 175 reqs, Swapped: 8 reqs, Pending: 1418 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 2.2%.
+INFO 10-19 21:29:33 metrics.py:367] Prefix cache hit rate: GPU: 28.63%, CPU: 28.36%
+INFO 10-19 21:29:34 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3275.3 tokens/s, Running: 155 reqs, Swapped: 15 reqs, Pending: 1418 reqs, GPU KV cache usage: 98.0%, CPU KV cache usage: 3.7%.
+INFO 10-19 21:29:34 metrics.py:367] Prefix cache hit rate: GPU: 28.21%, CPU: 28.68%
+INFO 10-19 21:29:35 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3138.6 tokens/s, Running: 145 reqs, Swapped: 18 reqs, Pending: 1418 reqs, GPU KV cache usage: 99.3%, CPU KV cache usage: 4.5%.
+INFO 10-19 21:29:35 metrics.py:367] Prefix cache hit rate: GPU: 27.77%, CPU: 28.74%
+INFO 10-19 21:29:36 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2698.2 tokens/s, Running: 131 reqs, Swapped: 23 reqs, Pending: 1418 reqs, GPU KV cache usage: 99.3%, CPU KV cache usage: 6.2%.
+INFO 10-19 21:29:36 metrics.py:367] Prefix cache hit rate: GPU: 27.61%, CPU: 30.46%
+INFO 10-19 21:29:37 metrics.py:351] Avg prompt throughput: 6597.2 tokens/s, Avg generation throughput: 1949.4 tokens/s, Running: 140 reqs, Swapped: 0 reqs, Pending: 1379 reqs, GPU KV cache usage: 95.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:37 metrics.py:367] Prefix cache hit rate: GPU: 27.81%, CPU: 30.46%
+INFO 10-19 21:29:38 metrics.py:351] Avg prompt throughput: 18847.0 tokens/s, Avg generation throughput: 1109.8 tokens/s, Running: 199 reqs, Swapped: 0 reqs, Pending: 1262 reqs, GPU KV cache usage: 97.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:38 metrics.py:367] Prefix cache hit rate: GPU: 29.01%, CPU: 30.46%
+WARNING 10-19 21:29:38 scheduler.py:1242] Sequence group 60 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=201
+INFO 10-19 21:29:39 metrics.py:351] Avg prompt throughput: 3856.1 tokens/s, Avg generation throughput: 2397.7 tokens/s, Running: 198 reqs, Swapped: 12 reqs, Pending: 1235 reqs, GPU KV cache usage: 99.1%, CPU KV cache usage: 2.1%.
+INFO 10-19 21:29:39 metrics.py:367] Prefix cache hit rate: GPU: 29.01%, CPU: 31.45%
+INFO 10-19 21:29:40 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2780.6 tokens/s, Running: 180 reqs, Swapped: 24 reqs, Pending: 1235 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 4.3%.
+INFO 10-19 21:29:40 metrics.py:367] Prefix cache hit rate: GPU: 28.68%, CPU: 32.23%
+INFO 10-19 21:29:41 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2734.8 tokens/s, Running: 163 reqs, Swapped: 37 reqs, Pending: 1235 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 7.5%.
+INFO 10-19 21:29:41 metrics.py:367] Prefix cache hit rate: GPU: 28.39%, CPU: 33.02%
+WARNING 10-19 21:29:41 scheduler.py:1242] Sequence group 87101 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=251
+INFO 10-19 21:29:42 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2909.3 tokens/s, Running: 144 reqs, Swapped: 48 reqs, Pending: 1235 reqs, GPU KV cache usage: 99.4%, CPU KV cache usage: 10.1%.
+INFO 10-19 21:29:42 metrics.py:367] Prefix cache hit rate: GPU: 28.03%, CPU: 34.71%
+INFO 10-19 21:29:43 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2929.3 tokens/s, Running: 136 reqs, Swapped: 47 reqs, Pending: 1235 reqs, GPU KV cache usage: 99.7%, CPU KV cache usage: 9.7%.
+INFO 10-19 21:29:43 metrics.py:367] Prefix cache hit rate: GPU: 27.93%, CPU: 35.28%
+INFO 10-19 21:29:44 metrics.py:351] Avg prompt throughput: 5616.2 tokens/s, Avg generation throughput: 1828.3 tokens/s, Running: 150 reqs, Swapped: 0 reqs, Pending: 1202 reqs, GPU KV cache usage: 91.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:44 metrics.py:367] Prefix cache hit rate: GPU: 28.22%, CPU: 35.90%
+INFO 10-19 21:29:45 metrics.py:351] Avg prompt throughput: 19353.4 tokens/s, Avg generation throughput: 1445.4 tokens/s, Running: 202 reqs, Swapped: 0 reqs, Pending: 1092 reqs, GPU KV cache usage: 95.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:45 metrics.py:367] Prefix cache hit rate: GPU: 29.28%, CPU: 35.90%
+INFO 10-19 21:29:46 metrics.py:351] Avg prompt throughput: 1044.3 tokens/s, Avg generation throughput: 3083.2 tokens/s, Running: 185 reqs, Swapped: 20 reqs, Pending: 1087 reqs, GPU KV cache usage: 99.4%, CPU KV cache usage: 4.9%.
+INFO 10-19 21:29:46 metrics.py:367] Prefix cache hit rate: GPU: 28.95%, CPU: 36.58%
+INFO 10-19 21:29:47 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3294.0 tokens/s, Running: 166 reqs, Swapped: 30 reqs, Pending: 1087 reqs, GPU KV cache usage: 99.3%, CPU KV cache usage: 7.2%.
+INFO 10-19 21:29:47 metrics.py:367] Prefix cache hit rate: GPU: 28.66%, CPU: 36.83%
+WARNING 10-19 21:29:47 scheduler.py:1242] Sequence group 87333 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=301
+INFO 10-19 21:29:48 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3120.7 tokens/s, Running: 151 reqs, Swapped: 28 reqs, Pending: 1087 reqs, GPU KV cache usage: 97.9%, CPU KV cache usage: 6.9%.
+INFO 10-19 21:29:48 metrics.py:367] Prefix cache hit rate: GPU: 28.35%, CPU: 36.77%
+INFO 10-19 21:29:49 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2739.4 tokens/s, Running: 137 reqs, Swapped: 25 reqs, Pending: 1087 reqs, GPU KV cache usage: 98.3%, CPU KV cache usage: 6.6%.
+INFO 10-19 21:29:49 metrics.py:367] Prefix cache hit rate: GPU: 28.08%, CPU: 37.06%
+INFO 10-19 21:29:50 metrics.py:351] Avg prompt throughput: 1720.4 tokens/s, Avg generation throughput: 2745.6 tokens/s, Running: 113 reqs, Swapped: 0 reqs, Pending: 1074 reqs, GPU KV cache usage: 82.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:50 metrics.py:367] Prefix cache hit rate: GPU: 27.99%, CPU: 37.70%
+INFO 10-19 21:29:51 metrics.py:351] Avg prompt throughput: 24244.2 tokens/s, Avg generation throughput: 841.5 tokens/s, Running: 195 reqs, Swapped: 0 reqs, Pending: 941 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:51 metrics.py:367] Prefix cache hit rate: GPU: 28.90%, CPU: 37.70%
+INFO 10-19 21:29:52 metrics.py:351] Avg prompt throughput: 2391.6 tokens/s, Avg generation throughput: 3024.2 tokens/s, Running: 183 reqs, Swapped: 8 reqs, Pending: 930 reqs, GPU KV cache usage: 100.0%, CPU KV cache usage: 2.1%.
+INFO 10-19 21:29:52 metrics.py:367] Prefix cache hit rate: GPU: 29.05%, CPU: 38.98%
+INFO 10-19 21:29:53 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3129.1 tokens/s, Running: 163 reqs, Swapped: 27 reqs, Pending: 930 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 6.6%.
+INFO 10-19 21:29:53 metrics.py:367] Prefix cache hit rate: GPU: 28.80%, CPU: 39.20%
+INFO 10-19 21:29:54 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2753.8 tokens/s, Running: 150 reqs, Swapped: 36 reqs, Pending: 930 reqs, GPU KV cache usage: 99.1%, CPU KV cache usage: 9.2%.
+INFO 10-19 21:29:54 metrics.py:367] Prefix cache hit rate: GPU: 28.58%, CPU: 39.10%
+WARNING 10-19 21:29:54 scheduler.py:1242] Sequence group 779 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=351
+INFO 10-19 21:29:55 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2805.1 tokens/s, Running: 139 reqs, Swapped: 34 reqs, Pending: 930 reqs, GPU KV cache usage: 97.6%, CPU KV cache usage: 8.6%.
+INFO 10-19 21:29:55 metrics.py:367] Prefix cache hit rate: GPU: 28.68%, CPU: 39.64%
+INFO 10-19 21:29:56 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2847.2 tokens/s, Running: 133 reqs, Swapped: 25 reqs, Pending: 930 reqs, GPU KV cache usage: 99.3%, CPU KV cache usage: 6.4%.
+INFO 10-19 21:29:56 metrics.py:367] Prefix cache hit rate: GPU: 28.40%, CPU: 40.21%
+INFO 10-19 21:29:57 metrics.py:351] Avg prompt throughput: 20927.1 tokens/s, Avg generation throughput: 1079.8 tokens/s, Running: 180 reqs, Swapped: 0 reqs, Pending: 816 reqs, GPU KV cache usage: 97.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:29:57 metrics.py:367] Prefix cache hit rate: GPU: 29.25%, CPU: 40.21%
+INFO 10-19 21:29:58 metrics.py:351] Avg prompt throughput: 5860.4 tokens/s, Avg generation throughput: 2831.9 tokens/s, Running: 181 reqs, Swapped: 4 reqs, Pending: 788 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 0.9%.
+INFO 10-19 21:29:58 metrics.py:367] Prefix cache hit rate: GPU: 29.52%, CPU: 40.12%
+INFO 10-19 21:29:59 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3062.9 tokens/s, Running: 156 reqs, Swapped: 27 reqs, Pending: 788 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 7.0%.
+INFO 10-19 21:29:59 metrics.py:367] Prefix cache hit rate: GPU: 29.30%, CPU: 41.42%
+INFO 10-19 21:30:00 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2756.6 tokens/s, Running: 143 reqs, Swapped: 32 reqs, Pending: 788 reqs, GPU KV cache usage: 99.1%, CPU KV cache usage: 8.9%.
+INFO 10-19 21:30:00 metrics.py:367] Prefix cache hit rate: GPU: 29.10%, CPU: 41.93%
+INFO 10-19 21:30:01 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2716.2 tokens/s, Running: 145 reqs, Swapped: 1 reqs, Pending: 788 reqs, GPU KV cache usage: 99.4%, CPU KV cache usage: 0.4%.
+INFO 10-19 21:30:01 metrics.py:367] Prefix cache hit rate: GPU: 29.23%, CPU: 42.18%
+WARNING 10-19 21:30:02 scheduler.py:1242] Sequence group 257 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=401
+INFO 10-19 21:30:02 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2878.9 tokens/s, Running: 129 reqs, Swapped: 13 reqs, Pending: 788 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 4.5%.
+INFO 10-19 21:30:02 metrics.py:367] Prefix cache hit rate: GPU: 29.05%, CPU: 44.03%
+INFO 10-19 21:30:03 metrics.py:351] Avg prompt throughput: 15499.2 tokens/s, Avg generation throughput: 1251.8 tokens/s, Running: 163 reqs, Swapped: 0 reqs, Pending: 695 reqs, GPU KV cache usage: 98.9%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:03 metrics.py:367] Prefix cache hit rate: GPU: 29.30%, CPU: 44.55%
+INFO 10-19 21:30:04 metrics.py:351] Avg prompt throughput: 8801.6 tokens/s, Avg generation throughput: 2299.8 tokens/s, Running: 172 reqs, Swapped: 0 reqs, Pending: 650 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:04 metrics.py:367] Prefix cache hit rate: GPU: 29.42%, CPU: 44.55%
+INFO 10-19 21:30:05 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3116.6 tokens/s, Running: 153 reqs, Swapped: 17 reqs, Pending: 650 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 5.1%.
+INFO 10-19 21:30:05 metrics.py:367] Prefix cache hit rate: GPU: 29.21%, CPU: 45.08%
+INFO 10-19 21:30:06 metrics.py:351] Avg prompt throughput: 1752.0 tokens/s, Avg generation throughput: 2471.7 tokens/s, Running: 154 reqs, Swapped: 0 reqs, Pending: 640 reqs, GPU KV cache usage: 98.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:06 metrics.py:367] Prefix cache hit rate: GPU: 29.25%, CPU: 44.94%
+INFO 10-19 21:30:07 metrics.py:351] Avg prompt throughput: 1521.8 tokens/s, Avg generation throughput: 2874.1 tokens/s, Running: 142 reqs, Swapped: 13 reqs, Pending: 633 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 3.2%.
+INFO 10-19 21:30:07 metrics.py:367] Prefix cache hit rate: GPU: 29.08%, CPU: 45.17%
+WARNING 10-19 21:30:08 scheduler.py:1242] Sequence group 195 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=451
+INFO 10-19 21:30:08 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2988.6 tokens/s, Running: 123 reqs, Swapped: 32 reqs, Pending: 633 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 8.2%.
+INFO 10-19 21:30:08 metrics.py:367] Prefix cache hit rate: GPU: 28.92%, CPU: 46.72%
+INFO 10-19 21:30:09 metrics.py:351] Avg prompt throughput: 12610.3 tokens/s, Avg generation throughput: 1412.0 tokens/s, Running: 155 reqs, Swapped: 0 reqs, Pending: 560 reqs, GPU KV cache usage: 96.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:09 metrics.py:367] Prefix cache hit rate: GPU: 28.95%, CPU: 47.12%
+INFO 10-19 21:30:10 metrics.py:351] Avg prompt throughput: 10495.3 tokens/s, Avg generation throughput: 2133.0 tokens/s, Running: 179 reqs, Swapped: 0 reqs, Pending: 497 reqs, GPU KV cache usage: 99.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:10 metrics.py:367] Prefix cache hit rate: GPU: 29.01%, CPU: 47.12%
+INFO 10-19 21:30:11 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3143.6 tokens/s, Running: 159 reqs, Swapped: 11 reqs, Pending: 497 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 2.5%.
+INFO 10-19 21:30:11 metrics.py:367] Prefix cache hit rate: GPU: 28.87%, CPU: 47.36%
+INFO 10-19 21:30:12 metrics.py:351] Avg prompt throughput: 939.3 tokens/s, Avg generation throughput: 2740.2 tokens/s, Running: 155 reqs, Swapped: 3 reqs, Pending: 492 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 0.6%.
+INFO 10-19 21:30:12 metrics.py:367] Prefix cache hit rate: GPU: 28.78%, CPU: 47.34%
+WARNING 10-19 21:30:13 scheduler.py:1242] Sequence group 87148 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=501
+INFO 10-19 21:30:13 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2954.0 tokens/s, Running: 134 reqs, Swapped: 24 reqs, Pending: 492 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 6.0%.
+INFO 10-19 21:30:13 metrics.py:367] Prefix cache hit rate: GPU: 28.61%, CPU: 48.66%
+INFO 10-19 21:30:14 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2650.4 tokens/s, Running: 122 reqs, Swapped: 22 reqs, Pending: 492 reqs, GPU KV cache usage: 98.9%, CPU KV cache usage: 5.8%.
+INFO 10-19 21:30:14 metrics.py:367] Prefix cache hit rate: GPU: 28.45%, CPU: 48.69%
+INFO 10-19 21:30:16 metrics.py:351] Avg prompt throughput: 13574.1 tokens/s, Avg generation throughput: 1391.6 tokens/s, Running: 164 reqs, Swapped: 0 reqs, Pending: 415 reqs, GPU KV cache usage: 96.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:16 metrics.py:367] Prefix cache hit rate: GPU: 28.82%, CPU: 48.86%
+INFO 10-19 21:30:17 metrics.py:351] Avg prompt throughput: 14794.3 tokens/s, Avg generation throughput: 1632.9 tokens/s, Running: 204 reqs, Swapped: 1 reqs, Pending: 329 reqs, GPU KV cache usage: 99.0%, CPU KV cache usage: 0.2%.
+INFO 10-19 21:30:17 metrics.py:367] Prefix cache hit rate: GPU: 29.12%, CPU: 48.89%
+INFO 10-19 21:30:18 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3332.2 tokens/s, Running: 183 reqs, Swapped: 11 reqs, Pending: 329 reqs, GPU KV cache usage: 98.7%, CPU KV cache usage: 2.6%.
+INFO 10-19 21:30:18 metrics.py:367] Prefix cache hit rate: GPU: 28.95%, CPU: 48.89%
+INFO 10-19 21:30:19 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2945.5 tokens/s, Running: 165 reqs, Swapped: 20 reqs, Pending: 329 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 4.8%.
+INFO 10-19 21:30:19 metrics.py:367] Prefix cache hit rate: GPU: 28.82%, CPU: 49.03%
+INFO 10-19 21:30:20 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3100.7 tokens/s, Running: 152 reqs, Swapped: 25 reqs, Pending: 329 reqs, GPU KV cache usage: 98.6%, CPU KV cache usage: 6.6%.
+INFO 10-19 21:30:20 metrics.py:367] Prefix cache hit rate: GPU: 28.68%, CPU: 48.58%
+WARNING 10-19 21:30:20 scheduler.py:1242] Sequence group 644 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=551
+INFO 10-19 21:30:21 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2971.0 tokens/s, Running: 136 reqs, Swapped: 27 reqs, Pending: 329 reqs, GPU KV cache usage: 98.3%, CPU KV cache usage: 7.0%.
+INFO 10-19 21:30:21 metrics.py:367] Prefix cache hit rate: GPU: 28.53%, CPU: 49.07%
+INFO 10-19 21:30:22 metrics.py:351] Avg prompt throughput: 3597.0 tokens/s, Avg generation throughput: 2476.7 tokens/s, Running: 118 reqs, Swapped: 0 reqs, Pending: 313 reqs, GPU KV cache usage: 83.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:22 metrics.py:367] Prefix cache hit rate: GPU: 28.57%, CPU: 49.01%
+INFO 10-19 21:30:23 metrics.py:351] Avg prompt throughput: 21982.4 tokens/s, Avg generation throughput: 1203.4 tokens/s, Running: 195 reqs, Swapped: 0 reqs, Pending: 188 reqs, GPU KV cache usage: 98.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:23 metrics.py:367] Prefix cache hit rate: GPU: 29.11%, CPU: 49.01%
+INFO 10-19 21:30:24 metrics.py:351] Avg prompt throughput: 3505.6 tokens/s, Avg generation throughput: 2661.3 tokens/s, Running: 188 reqs, Swapped: 4 reqs, Pending: 168 reqs, GPU KV cache usage: 98.8%, CPU KV cache usage: 1.0%.
+INFO 10-19 21:30:24 metrics.py:367] Prefix cache hit rate: GPU: 29.09%, CPU: 49.13%
+INFO 10-19 21:30:25 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3217.1 tokens/s, Running: 165 reqs, Swapped: 24 reqs, Pending: 168 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 5.8%.
+INFO 10-19 21:30:25 metrics.py:367] Prefix cache hit rate: GPU: 28.95%, CPU: 49.20%
+INFO 10-19 21:30:26 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3048.2 tokens/s, Running: 150 reqs, Swapped: 32 reqs, Pending: 168 reqs, GPU KV cache usage: 98.7%, CPU KV cache usage: 7.8%.
+INFO 10-19 21:30:26 metrics.py:367] Prefix cache hit rate: GPU: 28.85%, CPU: 49.04%
+WARNING 10-19 21:30:26 scheduler.py:1242] Sequence group 292 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=601
+INFO 10-19 21:30:27 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3025.4 tokens/s, Running: 139 reqs, Swapped: 25 reqs, Pending: 168 reqs, GPU KV cache usage: 97.2%, CPU KV cache usage: 6.1%.
+INFO 10-19 21:30:27 metrics.py:367] Prefix cache hit rate: GPU: 28.74%, CPU: 49.16%
+INFO 10-19 21:30:28 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2645.2 tokens/s, Running: 123 reqs, Swapped: 34 reqs, Pending: 168 reqs, GPU KV cache usage: 97.2%, CPU KV cache usage: 8.6%.
+INFO 10-19 21:30:28 metrics.py:367] Prefix cache hit rate: GPU: 28.65%, CPU: 49.97%
+INFO 10-19 21:30:29 metrics.py:351] Avg prompt throughput: 18953.5 tokens/s, Avg generation throughput: 799.1 tokens/s, Running: 181 reqs, Swapped: 0 reqs, Pending: 59 reqs, GPU KV cache usage: 98.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:29 metrics.py:367] Prefix cache hit rate: GPU: 28.97%, CPU: 49.97%
+INFO 10-19 21:30:30 metrics.py:351] Avg prompt throughput: 9578.9 tokens/s, Avg generation throughput: 2544.4 tokens/s, Running: 190 reqs, Swapped: 4 reqs, Pending: 14 reqs, GPU KV cache usage: 98.9%, CPU KV cache usage: 0.7%.
+INFO 10-19 21:30:30 metrics.py:367] Prefix cache hit rate: GPU: 29.27%, CPU: 49.74%
+INFO 10-19 21:30:31 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3108.0 tokens/s, Running: 160 reqs, Swapped: 31 reqs, Pending: 14 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 7.0%.
+INFO 10-19 21:30:31 metrics.py:367] Prefix cache hit rate: GPU: 29.15%, CPU: 50.31%
+WARNING 10-19 21:30:31 scheduler.py:1242] Sequence group 86779 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=651
+INFO 10-19 21:30:32 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3014.7 tokens/s, Running: 145 reqs, Swapped: 41 reqs, Pending: 14 reqs, GPU KV cache usage: 98.9%, CPU KV cache usage: 10.2%.
+INFO 10-19 21:30:32 metrics.py:367] Prefix cache hit rate: GPU: 29.01%, CPU: 50.55%
+INFO 10-19 21:30:33 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2755.8 tokens/s, Running: 151 reqs, Swapped: 10 reqs, Pending: 14 reqs, GPU KV cache usage: 98.0%, CPU KV cache usage: 2.9%.
+INFO 10-19 21:30:33 metrics.py:367] Prefix cache hit rate: GPU: 29.20%, CPU: 50.70%
+INFO 10-19 21:30:34 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2702.9 tokens/s, Running: 139 reqs, Swapped: 15 reqs, Pending: 14 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 4.4%.
+INFO 10-19 21:30:34 metrics.py:367] Prefix cache hit rate: GPU: 29.09%, CPU: 51.23%
+INFO 10-19 21:30:35 metrics.py:351] Avg prompt throughput: 2608.4 tokens/s, Avg generation throughput: 2323.2 tokens/s, Running: 64 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 47.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:35 metrics.py:367] Prefix cache hit rate: GPU: 29.03%, CPU: 51.91%
+INFO 10-19 21:30:36 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2733.5 tokens/s, Running: 18 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 15.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:30:36 metrics.py:367] Prefix cache hit rate: GPU: 28.93%, CPU: 51.91%
+executed in: 86.569194 seconds

@@ -1,0 +1,182 @@
+WARNING 10-19 21:26:20 config.py:604] Possibly too large swap space. 16.00 GiB out of the 31.21 GiB total CPU memory is allocated for the swap space.
+INFO 10-19 21:26:20 llm_engine.py:185] Initializing an LLM engine (v0.5.5) with config: model='facebook/opt-1.3b', speculative_config=None, tokenizer='facebook/opt-1.3b', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=2048, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=facebook/opt-1.3b, use_v2_block_manager=False, enable_prefix_caching=True)
+/home/th6re8e/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+INFO 10-19 21:26:21 model_runner.py:879] Starting to load model facebook/opt-1.3b...
+INFO 10-19 21:26:21 weight_utils.py:236] Using model weights format ['*.bin']
+Loading pt checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+/usr/local/lib/python3.10/dist-packages/vllm/model_executor/model_loader/weight_utils.py:416: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(bin_file, map_location="cpu")
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.61s/it]
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.61s/it]
+
+INFO 10-19 21:26:23 model_runner.py:890] Loading model weights took 2.4509 GB
+INFO 10-19 21:26:24 gpu_executor.py:121] # GPU blocks: 1896, # CPU blocks: 5461
+INFO 10-19 21:26:31 model_runner.py:1181] Capturing the model for CUDA graphs. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI.
+INFO 10-19 21:26:31 model_runner.py:1185] CUDA graphs can take additional 1~3 GiB memory per GPU. If you are running out of memory, consider decreasing `gpu_memory_utilization` or enforcing eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 10-19 21:26:39 model_runner.py:1300] Graph capturing finished in 9 secs.
+INFO 10-19 21:26:39 block_manager_v1.py:264] Automatic prefix caching is enabled.
+created LFUEvictorV2
+created LFUEvictorV2
+watermark:0.3
+INFO 10-19 21:26:40 metrics.py:351] Avg prompt throughput: 21348.3 tokens/s, Avg generation throughput: 117.3 tokens/s, Running: 118 reqs, Swapped: 0 reqs, Pending: 1930 reqs, GPU KV cache usage: 58.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:40 metrics.py:367] Prefix cache hit rate: GPU: 20.66%, CPU: 0.00%
+INFO 10-19 21:26:41 metrics.py:351] Avg prompt throughput: 5722.0 tokens/s, Avg generation throughput: 2451.3 tokens/s, Running: 148 reqs, Swapped: 0 reqs, Pending: 1900 reqs, GPU KV cache usage: 77.9%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:41 metrics.py:367] Prefix cache hit rate: GPU: 23.71%, CPU: 0.00%
+INFO 10-19 21:26:43 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3167.6 tokens/s, Running: 148 reqs, Swapped: 0 reqs, Pending: 1900 reqs, GPU KV cache usage: 88.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:43 metrics.py:367] Prefix cache hit rate: GPU: 21.42%, CPU: 0.00%
+INFO 10-19 21:26:44 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2620.4 tokens/s, Running: 148 reqs, Swapped: 0 reqs, Pending: 1900 reqs, GPU KV cache usage: 97.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:44 metrics.py:367] Prefix cache hit rate: GPU: 19.84%, CPU: 0.00%
+WARNING 10-19 21:26:44 scheduler.py:1242] Sequence group 86794 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=1
+INFO 10-19 21:26:45 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2615.1 tokens/s, Running: 137 reqs, Swapped: 11 reqs, Pending: 1900 reqs, GPU KV cache usage: 99.9%, CPU KV cache usage: 3.9%.
+INFO 10-19 21:26:45 metrics.py:367] Prefix cache hit rate: GPU: 18.46%, CPU: 0.00%
+INFO 10-19 21:26:46 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3118.0 tokens/s, Running: 92 reqs, Swapped: 25 reqs, Pending: 1900 reqs, GPU KV cache usage: 78.6%, CPU KV cache usage: 8.1%.
+INFO 10-19 21:26:46 metrics.py:367] Prefix cache hit rate: GPU: 17.10%, CPU: 2.84%
+INFO 10-19 21:26:47 metrics.py:351] Avg prompt throughput: 14503.1 tokens/s, Avg generation throughput: 1352.7 tokens/s, Running: 115 reqs, Swapped: 0 reqs, Pending: 1815 reqs, GPU KV cache usage: 70.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:47 metrics.py:367] Prefix cache hit rate: GPU: 23.01%, CPU: 2.84%
+INFO 10-19 21:26:48 metrics.py:351] Avg prompt throughput: 5445.4 tokens/s, Avg generation throughput: 2959.0 tokens/s, Running: 116 reqs, Swapped: 0 reqs, Pending: 1786 reqs, GPU KV cache usage: 70.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:48 metrics.py:367] Prefix cache hit rate: GPU: 24.11%, CPU: 2.84%
+INFO 10-19 21:26:49 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3564.8 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 1786 reqs, GPU KV cache usage: 80.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:49 metrics.py:367] Prefix cache hit rate: GPU: 23.02%, CPU: 2.84%
+INFO 10-19 21:26:50 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3118.3 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 1786 reqs, GPU KV cache usage: 90.9%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:50 metrics.py:367] Prefix cache hit rate: GPU: 22.14%, CPU: 2.84%
+INFO 10-19 21:26:51 metrics.py:351] Avg prompt throughput: 15128.4 tokens/s, Avg generation throughput: 1778.6 tokens/s, Running: 113 reqs, Swapped: 0 reqs, Pending: 1709 reqs, GPU KV cache usage: 69.1%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:51 metrics.py:367] Prefix cache hit rate: GPU: 25.17%, CPU: 2.84%
+INFO 10-19 21:26:52 metrics.py:351] Avg prompt throughput: 5099.7 tokens/s, Avg generation throughput: 3004.8 tokens/s, Running: 115 reqs, Swapped: 0 reqs, Pending: 1678 reqs, GPU KV cache usage: 69.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:52 metrics.py:367] Prefix cache hit rate: GPU: 25.82%, CPU: 2.84%
+INFO 10-19 21:26:53 metrics.py:351] Avg prompt throughput: 399.9 tokens/s, Avg generation throughput: 3505.6 tokens/s, Running: 110 reqs, Swapped: 0 reqs, Pending: 1676 reqs, GPU KV cache usage: 77.1%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:53 metrics.py:367] Prefix cache hit rate: GPU: 25.16%, CPU: 2.84%
+INFO 10-19 21:26:54 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3437.9 tokens/s, Running: 110 reqs, Swapped: 0 reqs, Pending: 1676 reqs, GPU KV cache usage: 88.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:54 metrics.py:367] Prefix cache hit rate: GPU: 24.40%, CPU: 2.84%
+INFO 10-19 21:26:55 metrics.py:351] Avg prompt throughput: 15457.8 tokens/s, Avg generation throughput: 1686.0 tokens/s, Running: 112 reqs, Swapped: 0 reqs, Pending: 1595 reqs, GPU KV cache usage: 69.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:55 metrics.py:367] Prefix cache hit rate: GPU: 26.42%, CPU: 2.84%
+INFO 10-19 21:26:56 metrics.py:351] Avg prompt throughput: 5590.5 tokens/s, Avg generation throughput: 2924.7 tokens/s, Running: 118 reqs, Swapped: 0 reqs, Pending: 1562 reqs, GPU KV cache usage: 70.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:56 metrics.py:367] Prefix cache hit rate: GPU: 26.50%, CPU: 2.84%
+INFO 10-19 21:26:57 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3552.7 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 1562 reqs, GPU KV cache usage: 79.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:57 metrics.py:367] Prefix cache hit rate: GPU: 25.85%, CPU: 2.84%
+INFO 10-19 21:26:58 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3091.0 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 1562 reqs, GPU KV cache usage: 89.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:58 metrics.py:367] Prefix cache hit rate: GPU: 25.31%, CPU: 2.84%
+INFO 10-19 21:26:59 metrics.py:351] Avg prompt throughput: 10519.9 tokens/s, Avg generation throughput: 2156.2 tokens/s, Running: 107 reqs, Swapped: 0 reqs, Pending: 1499 reqs, GPU KV cache usage: 67.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:26:59 metrics.py:367] Prefix cache hit rate: GPU: 25.86%, CPU: 2.84%
+INFO 10-19 21:27:00 metrics.py:351] Avg prompt throughput: 11370.3 tokens/s, Avg generation throughput: 1998.8 tokens/s, Running: 133 reqs, Swapped: 0 reqs, Pending: 1433 reqs, GPU KV cache usage: 70.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:00 metrics.py:367] Prefix cache hit rate: GPU: 26.34%, CPU: 2.84%
+INFO 10-19 21:27:01 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3257.9 tokens/s, Running: 129 reqs, Swapped: 0 reqs, Pending: 1433 reqs, GPU KV cache usage: 78.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:01 metrics.py:367] Prefix cache hit rate: GPU: 25.87%, CPU: 2.84%
+INFO 10-19 21:27:02 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3147.2 tokens/s, Running: 129 reqs, Swapped: 0 reqs, Pending: 1433 reqs, GPU KV cache usage: 88.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:02 metrics.py:367] Prefix cache hit rate: GPU: 25.41%, CPU: 2.84%
+INFO 10-19 21:27:03 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3062.3 tokens/s, Running: 129 reqs, Swapped: 0 reqs, Pending: 1433 reqs, GPU KV cache usage: 99.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:03 metrics.py:367] Prefix cache hit rate: GPU: 24.99%, CPU: 2.84%
+INFO 10-19 21:27:04 metrics.py:351] Avg prompt throughput: 10914.9 tokens/s, Avg generation throughput: 2085.1 tokens/s, Running: 107 reqs, Swapped: 0 reqs, Pending: 1369 reqs, GPU KV cache usage: 66.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:04 metrics.py:367] Prefix cache hit rate: GPU: 25.45%, CPU: 6.37%
+INFO 10-19 21:27:05 metrics.py:351] Avg prompt throughput: 9537.7 tokens/s, Avg generation throughput: 2208.4 tokens/s, Running: 131 reqs, Swapped: 0 reqs, Pending: 1309 reqs, GPU KV cache usage: 71.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:05 metrics.py:367] Prefix cache hit rate: GPU: 25.73%, CPU: 6.37%
+INFO 10-19 21:27:06 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3206.6 tokens/s, Running: 124 reqs, Swapped: 0 reqs, Pending: 1309 reqs, GPU KV cache usage: 77.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:06 metrics.py:367] Prefix cache hit rate: GPU: 25.34%, CPU: 6.37%
+INFO 10-19 21:27:07 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3608.2 tokens/s, Running: 124 reqs, Swapped: 0 reqs, Pending: 1309 reqs, GPU KV cache usage: 89.1%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:07 metrics.py:367] Prefix cache hit rate: GPU: 24.91%, CPU: 6.37%
+INFO 10-19 21:27:08 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3475.1 tokens/s, Running: 77 reqs, Swapped: 0 reqs, Pending: 1309 reqs, GPU KV cache usage: 65.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:08 metrics.py:367] Prefix cache hit rate: GPU: 24.53%, CPU: 6.37%
+INFO 10-19 21:27:09 metrics.py:351] Avg prompt throughput: 22293.8 tokens/s, Avg generation throughput: 983.6 tokens/s, Running: 145 reqs, Swapped: 0 reqs, Pending: 1177 reqs, GPU KV cache usage: 69.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:09 metrics.py:367] Prefix cache hit rate: GPU: 26.34%, CPU: 6.37%
+INFO 10-19 21:27:10 metrics.py:351] Avg prompt throughput: 2401.4 tokens/s, Avg generation throughput: 3093.0 tokens/s, Running: 144 reqs, Swapped: 0 reqs, Pending: 1167 reqs, GPU KV cache usage: 76.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:10 metrics.py:367] Prefix cache hit rate: GPU: 26.41%, CPU: 6.37%
+INFO 10-19 21:27:11 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3240.4 tokens/s, Running: 142 reqs, Swapped: 0 reqs, Pending: 1167 reqs, GPU KV cache usage: 85.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:11 metrics.py:367] Prefix cache hit rate: GPU: 26.06%, CPU: 6.37%
+INFO 10-19 21:27:12 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2830.8 tokens/s, Running: 142 reqs, Swapped: 0 reqs, Pending: 1167 reqs, GPU KV cache usage: 95.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:12 metrics.py:367] Prefix cache hit rate: GPU: 25.78%, CPU: 6.37%
+INFO 10-19 21:27:13 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2981.6 tokens/s, Running: 133 reqs, Swapped: 9 reqs, Pending: 1167 reqs, GPU KV cache usage: 99.6%, CPU KV cache usage: 3.4%.
+INFO 10-19 21:27:13 metrics.py:367] Prefix cache hit rate: GPU: 25.47%, CPU: 11.40%
+INFO 10-19 21:27:14 metrics.py:351] Avg prompt throughput: 12400.8 tokens/s, Avg generation throughput: 1695.2 tokens/s, Running: 115 reqs, Swapped: 0 reqs, Pending: 1091 reqs, GPU KV cache usage: 67.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:14 metrics.py:367] Prefix cache hit rate: GPU: 26.17%, CPU: 10.53%
+INFO 10-19 21:27:15 metrics.py:351] Avg prompt throughput: 7358.3 tokens/s, Avg generation throughput: 2720.6 tokens/s, Running: 125 reqs, Swapped: 0 reqs, Pending: 1047 reqs, GPU KV cache usage: 71.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:15 metrics.py:367] Prefix cache hit rate: GPU: 26.35%, CPU: 10.53%
+INFO 10-19 21:27:16 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3635.6 tokens/s, Running: 121 reqs, Swapped: 0 reqs, Pending: 1047 reqs, GPU KV cache usage: 79.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:16 metrics.py:367] Prefix cache hit rate: GPU: 26.03%, CPU: 10.53%
+INFO 10-19 21:27:17 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3344.3 tokens/s, Running: 120 reqs, Swapped: 0 reqs, Pending: 1047 reqs, GPU KV cache usage: 89.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:17 metrics.py:367] Prefix cache hit rate: GPU: 25.74%, CPU: 10.53%
+INFO 10-19 21:27:18 metrics.py:351] Avg prompt throughput: 4341.2 tokens/s, Avg generation throughput: 2552.1 tokens/s, Running: 90 reqs, Swapped: 0 reqs, Pending: 1020 reqs, GPU KV cache usage: 66.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:18 metrics.py:367] Prefix cache hit rate: GPU: 25.70%, CPU: 10.53%
+INFO 10-19 21:27:19 metrics.py:351] Avg prompt throughput: 13755.1 tokens/s, Avg generation throughput: 1531.2 tokens/s, Running: 115 reqs, Swapped: 0 reqs, Pending: 946 reqs, GPU KV cache usage: 67.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:19 metrics.py:367] Prefix cache hit rate: GPU: 26.35%, CPU: 10.53%
+INFO 10-19 21:27:20 metrics.py:351] Avg prompt throughput: 6493.6 tokens/s, Avg generation throughput: 2017.3 tokens/s, Running: 132 reqs, Swapped: 0 reqs, Pending: 915 reqs, GPU KV cache usage: 71.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:20 metrics.py:367] Prefix cache hit rate: GPU: 26.94%, CPU: 10.53%
+INFO 10-19 21:27:21 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3168.5 tokens/s, Running: 132 reqs, Swapped: 0 reqs, Pending: 915 reqs, GPU KV cache usage: 82.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:21 metrics.py:367] Prefix cache hit rate: GPU: 26.68%, CPU: 10.53%
+INFO 10-19 21:27:22 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3063.0 tokens/s, Running: 132 reqs, Swapped: 0 reqs, Pending: 915 reqs, GPU KV cache usage: 92.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:22 metrics.py:367] Prefix cache hit rate: GPU: 26.44%, CPU: 10.53%
+INFO 10-19 21:27:23 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2988.8 tokens/s, Running: 123 reqs, Swapped: 3 reqs, Pending: 915 reqs, GPU KV cache usage: 96.3%, CPU KV cache usage: 1.0%.
+INFO 10-19 21:27:23 metrics.py:367] Prefix cache hit rate: GPU: 26.21%, CPU: 13.16%
+INFO 10-19 21:27:24 metrics.py:351] Avg prompt throughput: 15151.9 tokens/s, Avg generation throughput: 1680.0 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 833 reqs, GPU KV cache usage: 69.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:24 metrics.py:367] Prefix cache hit rate: GPU: 26.94%, CPU: 13.16%
+INFO 10-19 21:27:25 metrics.py:351] Avg prompt throughput: 8599.7 tokens/s, Avg generation throughput: 2752.0 tokens/s, Running: 125 reqs, Swapped: 0 reqs, Pending: 791 reqs, GPU KV cache usage: 73.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:25 metrics.py:367] Prefix cache hit rate: GPU: 27.49%, CPU: 13.16%
+INFO 10-19 21:27:26 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3578.6 tokens/s, Running: 124 reqs, Swapped: 0 reqs, Pending: 791 reqs, GPU KV cache usage: 84.4%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:26 metrics.py:367] Prefix cache hit rate: GPU: 27.23%, CPU: 13.16%
+INFO 10-19 21:27:27 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3131.2 tokens/s, Running: 124 reqs, Swapped: 0 reqs, Pending: 791 reqs, GPU KV cache usage: 94.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:27 metrics.py:367] Prefix cache hit rate: GPU: 27.00%, CPU: 13.16%
+INFO 10-19 21:27:28 metrics.py:351] Avg prompt throughput: 4162.1 tokens/s, Avg generation throughput: 2774.1 tokens/s, Running: 80 reqs, Swapped: 0 reqs, Pending: 764 reqs, GPU KV cache usage: 62.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:28 metrics.py:367] Prefix cache hit rate: GPU: 26.87%, CPU: 12.88%
+INFO 10-19 21:27:29 metrics.py:351] Avg prompt throughput: 16693.9 tokens/s, Avg generation throughput: 1468.9 tokens/s, Running: 129 reqs, Swapped: 0 reqs, Pending: 666 reqs, GPU KV cache usage: 70.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:29 metrics.py:367] Prefix cache hit rate: GPU: 27.21%, CPU: 12.88%
+INFO 10-19 21:27:30 metrics.py:351] Avg prompt throughput: 1989.0 tokens/s, Avg generation throughput: 3167.9 tokens/s, Running: 134 reqs, Swapped: 0 reqs, Pending: 657 reqs, GPU KV cache usage: 79.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:30 metrics.py:367] Prefix cache hit rate: GPU: 27.20%, CPU: 12.88%
+INFO 10-19 21:27:31 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3204.7 tokens/s, Running: 134 reqs, Swapped: 0 reqs, Pending: 657 reqs, GPU KV cache usage: 89.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:31 metrics.py:367] Prefix cache hit rate: GPU: 26.99%, CPU: 12.88%
+INFO 10-19 21:27:32 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3121.3 tokens/s, Running: 133 reqs, Swapped: 1 reqs, Pending: 657 reqs, GPU KV cache usage: 99.8%, CPU KV cache usage: 0.2%.
+INFO 10-19 21:27:32 metrics.py:367] Prefix cache hit rate: GPU: 26.78%, CPU: 12.72%
+WARNING 10-19 21:27:33 scheduler.py:1242] Sequence group 86851 is preempted by PreemptionMode.SWAP mode because there is not enough KV cache space. This can affect the end-to-end performance. Increase gpu_memory_utilization or tensor_parallel_size to provide more KV cache memory. total_num_cumulative_preemption=51
+INFO 10-19 21:27:34 metrics.py:351] Avg prompt throughput: 4854.3 tokens/s, Avg generation throughput: 2503.7 tokens/s, Running: 91 reqs, Swapped: 0 reqs, Pending: 633 reqs, GPU KV cache usage: 69.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:34 metrics.py:367] Prefix cache hit rate: GPU: 26.78%, CPU: 16.46%
+INFO 10-19 21:27:35 metrics.py:351] Avg prompt throughput: 13271.2 tokens/s, Avg generation throughput: 1840.8 tokens/s, Running: 114 reqs, Swapped: 0 reqs, Pending: 557 reqs, GPU KV cache usage: 70.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:35 metrics.py:367] Prefix cache hit rate: GPU: 26.90%, CPU: 16.46%
+INFO 10-19 21:27:36 metrics.py:351] Avg prompt throughput: 1480.8 tokens/s, Avg generation throughput: 2877.8 tokens/s, Running: 110 reqs, Swapped: 0 reqs, Pending: 547 reqs, GPU KV cache usage: 72.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:36 metrics.py:367] Prefix cache hit rate: GPU: 26.69%, CPU: 16.46%
+INFO 10-19 21:27:37 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3463.3 tokens/s, Running: 110 reqs, Swapped: 0 reqs, Pending: 547 reqs, GPU KV cache usage: 84.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:37 metrics.py:367] Prefix cache hit rate: GPU: 26.48%, CPU: 16.46%
+INFO 10-19 21:27:38 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3158.0 tokens/s, Running: 93 reqs, Swapped: 0 reqs, Pending: 547 reqs, GPU KV cache usage: 79.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:38 metrics.py:367] Prefix cache hit rate: GPU: 26.30%, CPU: 16.46%
+INFO 10-19 21:27:39 metrics.py:351] Avg prompt throughput: 17067.6 tokens/s, Avg generation throughput: 1116.8 tokens/s, Running: 120 reqs, Swapped: 0 reqs, Pending: 450 reqs, GPU KV cache usage: 69.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:39 metrics.py:367] Prefix cache hit rate: GPU: 26.62%, CPU: 16.46%
+INFO 10-19 21:27:40 metrics.py:351] Avg prompt throughput: 5081.3 tokens/s, Avg generation throughput: 2557.1 tokens/s, Running: 128 reqs, Swapped: 0 reqs, Pending: 421 reqs, GPU KV cache usage: 68.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:40 metrics.py:367] Prefix cache hit rate: GPU: 26.81%, CPU: 16.46%
+INFO 10-19 21:27:41 metrics.py:351] Avg prompt throughput: 1008.5 tokens/s, Avg generation throughput: 2764.9 tokens/s, Running: 131 reqs, Swapped: 0 reqs, Pending: 416 reqs, GPU KV cache usage: 77.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:41 metrics.py:367] Prefix cache hit rate: GPU: 26.72%, CPU: 16.46%
+INFO 10-19 21:27:42 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2665.1 tokens/s, Running: 131 reqs, Swapped: 0 reqs, Pending: 416 reqs, GPU KV cache usage: 86.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:42 metrics.py:367] Prefix cache hit rate: GPU: 26.57%, CPU: 16.46%
+INFO 10-19 21:27:43 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2542.2 tokens/s, Running: 131 reqs, Swapped: 0 reqs, Pending: 416 reqs, GPU KV cache usage: 94.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:43 metrics.py:367] Prefix cache hit rate: GPU: 26.43%, CPU: 16.46%
+INFO 10-19 21:27:44 metrics.py:351] Avg prompt throughput: 4196.2 tokens/s, Avg generation throughput: 2130.9 tokens/s, Running: 86 reqs, Swapped: 0 reqs, Pending: 389 reqs, GPU KV cache usage: 61.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:44 metrics.py:367] Prefix cache hit rate: GPU: 26.32%, CPU: 16.46%
+INFO 10-19 21:27:45 metrics.py:351] Avg prompt throughput: 15310.5 tokens/s, Avg generation throughput: 1550.8 tokens/s, Running: 132 reqs, Swapped: 0 reqs, Pending: 308 reqs, GPU KV cache usage: 69.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:45 metrics.py:367] Prefix cache hit rate: GPU: 26.96%, CPU: 16.46%
+INFO 10-19 21:27:46 metrics.py:351] Avg prompt throughput: 3650.4 tokens/s, Avg generation throughput: 2835.2 tokens/s, Running: 127 reqs, Swapped: 0 reqs, Pending: 289 reqs, GPU KV cache usage: 72.5%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:46 metrics.py:367] Prefix cache hit rate: GPU: 26.97%, CPU: 16.46%
+INFO 10-19 21:27:47 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3647.1 tokens/s, Running: 127 reqs, Swapped: 0 reqs, Pending: 289 reqs, GPU KV cache usage: 84.9%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:47 metrics.py:367] Prefix cache hit rate: GPU: 26.78%, CPU: 16.46%
+INFO 10-19 21:27:48 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3515.4 tokens/s, Running: 127 reqs, Swapped: 0 reqs, Pending: 289 reqs, GPU KV cache usage: 96.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:48 metrics.py:367] Prefix cache hit rate: GPU: 26.61%, CPU: 16.46%
+INFO 10-19 21:27:49 metrics.py:351] Avg prompt throughput: 10062.7 tokens/s, Avg generation throughput: 2182.7 tokens/s, Running: 106 reqs, Swapped: 0 reqs, Pending: 227 reqs, GPU KV cache usage: 65.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:49 metrics.py:367] Prefix cache hit rate: GPU: 26.72%, CPU: 16.46%
+INFO 10-19 21:27:50 metrics.py:351] Avg prompt throughput: 10559.9 tokens/s, Avg generation throughput: 2362.0 tokens/s, Running: 123 reqs, Swapped: 0 reqs, Pending: 168 reqs, GPU KV cache usage: 70.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:50 metrics.py:367] Prefix cache hit rate: GPU: 27.03%, CPU: 16.46%
+INFO 10-19 21:27:51 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3325.7 tokens/s, Running: 121 reqs, Swapped: 0 reqs, Pending: 168 reqs, GPU KV cache usage: 80.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:51 metrics.py:367] Prefix cache hit rate: GPU: 26.88%, CPU: 16.46%
+INFO 10-19 21:27:52 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3559.9 tokens/s, Running: 121 reqs, Swapped: 0 reqs, Pending: 168 reqs, GPU KV cache usage: 92.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:52 metrics.py:367] Prefix cache hit rate: GPU: 26.70%, CPU: 16.46%
+INFO 10-19 21:27:53 metrics.py:351] Avg prompt throughput: 4696.8 tokens/s, Avg generation throughput: 2844.5 tokens/s, Running: 89 reqs, Swapped: 0 reqs, Pending: 141 reqs, GPU KV cache usage: 67.0%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:53 metrics.py:367] Prefix cache hit rate: GPU: 26.68%, CPU: 16.46%
+INFO 10-19 21:27:54 metrics.py:351] Avg prompt throughput: 15459.3 tokens/s, Avg generation throughput: 1533.0 tokens/s, Running: 127 reqs, Swapped: 0 reqs, Pending: 52 reqs, GPU KV cache usage: 69.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:54 metrics.py:367] Prefix cache hit rate: GPU: 26.93%, CPU: 16.46%
+INFO 10-19 21:27:55 metrics.py:351] Avg prompt throughput: 3880.7 tokens/s, Avg generation throughput: 3013.6 tokens/s, Running: 133 reqs, Swapped: 0 reqs, Pending: 35 reqs, GPU KV cache usage: 75.7%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:55 metrics.py:367] Prefix cache hit rate: GPU: 27.07%, CPU: 16.46%
+INFO 10-19 21:27:56 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3148.3 tokens/s, Running: 133 reqs, Swapped: 0 reqs, Pending: 35 reqs, GPU KV cache usage: 86.8%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:56 metrics.py:367] Prefix cache hit rate: GPU: 26.92%, CPU: 16.46%
+INFO 10-19 21:27:57 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3074.7 tokens/s, Running: 133 reqs, Swapped: 0 reqs, Pending: 35 reqs, GPU KV cache usage: 96.6%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:57 metrics.py:367] Prefix cache hit rate: GPU: 26.78%, CPU: 16.46%
+INFO 10-19 21:27:58 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2754.4 tokens/s, Running: 74 reqs, Swapped: 5 reqs, Pending: 35 reqs, GPU KV cache usage: 62.8%, CPU KV cache usage: 1.8%.
+INFO 10-19 21:27:58 metrics.py:367] Prefix cache hit rate: GPU: 26.65%, CPU: 14.87%
+INFO 10-19 21:27:59 metrics.py:351] Avg prompt throughput: 6582.8 tokens/s, Avg generation throughput: 2147.4 tokens/s, Running: 35 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 24.3%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:27:59 metrics.py:367] Prefix cache hit rate: GPU: 26.75%, CPU: 14.87%
+INFO 10-19 21:28:00 metrics.py:351] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2253.6 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 1.2%, CPU KV cache usage: 0.0%.
+INFO 10-19 21:28:00 metrics.py:367] Prefix cache hit rate: GPU: 26.65%, CPU: 14.87%
+executed in: 80.582171 seconds

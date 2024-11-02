@@ -6,7 +6,6 @@ from vllm.sequence import SamplerOutput, ExecuteModelRequest
 from vllm.utils import FlexibleArgumentParser, Device
 from vllm.inputs.data import TokensPrompt
 
-csv = CSV_Assist()
 import torch
 from typing_extensions import TypedDict
 
@@ -28,12 +27,6 @@ def log_message(message):
     current_time = datetime.now().strftime('%m-%d %H:%M:%S')
     logging.info(f'{message}')
 
-
-start = 1
-end = 29889
-lenght = 50
-num_vectors = 32
-
 min_tokens = 0
 max_tokens = None
 
@@ -50,7 +43,7 @@ class Data():
         self.output_tokens: List[int] = output_tokens
 
 
-num_request = 512
+num_request = 1024
 dataset: Dict[int, List[Data]] = {}
 
 
@@ -95,8 +88,10 @@ def next_query(request_id: str) -> Tuple[str, List[int]] | Tuple[None, None]:
     
 
 def running(engine: LLMEngine, finished_log, last_sampled_log):
+    i = 0
     while engine.has_unfinished_requests():
-
+        i += 1
+        #print(f'step: {i}')
         request_outputs, outputs, request = engine.simulate_step(csv, execute=True)
         cpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.CPU)
         gpu_rate = engine.scheduler[0].get_prefix_cache_hit_rate(device=Device.GPU)
@@ -132,6 +127,7 @@ def running(engine: LLMEngine, finished_log, last_sampled_log):
                 #print(request_output.outputs)
                 next_id, next_input = next_query(request_output.request_id)
                 if next_input is not None:
+                    #print(f'add, {request_output.request_id}, {next_id}, {next_input}')
                     engine.add_request(next_id,
                                        TokensPrompt({
                                            'prompt_token_ids': next_input}),
@@ -169,12 +165,15 @@ def process_requests(engine: LLMEngine):
 
 def initialize_engine(args: argparse.Namespace) -> LLMEngine:
     """Initialize the LLMEngine from the command line arguments."""
-    engine_args = EngineArgs(model="meta-llama/Llama-2-7b-chat-hf", # "facebook/opt-125m" 
-                             dtype=torch.bfloat16,
-                             trust_remote_code=True,
-                             quantization="bitsandbytes",
-                             load_format="bitsandbytes",
-                             kv_cache_dtype="fp8",
+    engine_args = EngineArgs(#model="meta-llama/Llama-2-7b-chat-hf",
+                             model="facebook/opt-1.3b",
+                             #model='openai-community/gpt2-medium',
+                             #model='meta-llama/Llama-3.2-1B',
+                             #dtype=torch.bfloat16,
+                             #trust_remote_code=True,
+                             #quantization="bitsandbytes",
+                             #load_format="bitsandbytes",
+                             #kv_cache_dtype="fp8",
                              #quantization_param_path="./tests/fp8_kv/llama2-7b-fp8-kv/kv_cache_scales.json",
                              swap_space=16,
                              preemption_mode='swap',
@@ -192,7 +191,7 @@ def main(args: argparse.Namespace):
     stat_logger = engine.stat_loggers
     stat_logger_logging = stat_logger.get('logging')
     stat_logger_prometheus = stat_logger.get('prometheus')
-    stat_logger_logging.local_interval = 10
+    stat_logger_logging.local_interval = 1
     create_test_dataset()
     start_time = time.time()
     process_requests(engine)

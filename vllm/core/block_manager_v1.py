@@ -108,6 +108,8 @@ class CachedBlockAllocator(BlockAllocatorBase):
         self.current_num_blocks += 1
         return block
 
+    num_remove = 0
+    num_hit = 0
     def allocate(self,
                  block_hash: Optional[int] = None,
                  num_hashed_tokens: int = 0) -> PhysicalTokenBlock:
@@ -117,12 +119,13 @@ class CachedBlockAllocator(BlockAllocatorBase):
         if block_hash in self.evictor:
             assert block_hash not in self.cached_blocks
             block = self.evictor.remove(block_hash)
+            self.num_remove += 1
             assert block.ref_count == 0
             self.cached_blocks[block_hash] = block
 
         if block_hash in self.cached_blocks:
             self.cache_metric_data.query(hit=True)
-            self.cached_blocks[block_hash].freq += 1
+            self.num_hit += 1
         else:
             self.cache_metric_data.query(hit=False)
             self.cached_blocks[block_hash] = self.allocate_block(
@@ -130,6 +133,7 @@ class CachedBlockAllocator(BlockAllocatorBase):
         block = self.cached_blocks[block_hash]
         assert block.block_hash == block_hash
         block.ref_count += 1
+        self.cached_blocks[block_hash].freq += 1
         return block
 
     def free(self, block: PhysicalTokenBlock) -> None:

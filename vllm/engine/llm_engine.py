@@ -598,7 +598,7 @@ class LLMEngine:
         seq_id = next(self.seq_counter)
         eos_token_id = self._get_eos_token_id(lora_request)
 
-        seq = Sequence(seq_id, processed_inputs, block_size, eos_token_id,
+        seq = Sequence(seq_id, processed_inputs, block_size, 2,
                        lora_request, prompt_adapter_request)
 
         encoder_seq = None
@@ -1325,6 +1325,7 @@ class LLMEngine:
 
         end_schedule_time = time.time()
 
+        execute_model_req = None
         if not scheduler_outputs.is_empty():
             finished_requests_ids = self.scheduler[
                 0].get_and_reset_finished_requests_ids()
@@ -1342,7 +1343,7 @@ class LLMEngine:
             output = self.model_executor.execute_model(
                 execute_model_req=execute_model_req)
 
-            end_execute_time = time.time()
+            self.total_execute_time += time.time() - start_execute_time
         else:
             output = []
 
@@ -1366,8 +1367,8 @@ class LLMEngine:
             print(f'total_schedule_time : {self.total_schedule_time:.10f}')
             print(f'total_execute_time : {self.total_execute_time:.10f}')
 
-            total_schedule_per_step = (self.total_schedule_time / self.total_step_time) * 100
-            print(f'total_schedule_per_step : {total_schedule_per_step}')
+            #total_schedule_per_step = (self.total_schedule_time / self.total_step_time) * 100
+            #print(f'total_schedule_per_step : {total_schedule_per_step}')
 
             self.model_executor.stop_remote_worker_execution_loop()
 
@@ -1375,13 +1376,11 @@ class LLMEngine:
 
         step_time = end_step_time - start_step_time
         schedule_time = end_schedule_time - start_schedule_time
-        execute_time = end_execute_time - start_execute_time
 
         schedule_per_step = (schedule_time / step_time) * 100
 
         self.total_step_time += step_time
         self.total_schedule_time += schedule_time
-        self.total_execute_time += execute_time
 
         '''
         print(f'step iter : {self.it}')
@@ -1400,12 +1399,18 @@ class LLMEngine:
 
         print(f'schedule_per_step : {schedule_per_step:.10f}%')
         '''
+
         return request_outputs, output, execute_model_req
+
+    def print_time_log(self):
+        print(f'iter : {self.it}, scheduling time : {self.total_schedule_time}, execute_time : {self.total_execute_time}')
 
     def simulate_step(self, csv, execute=False):
         self.it += 1
         
+        start_schedule_time = time.time()
         seq_group_metadata_list, scheduler_outputs = self.scheduler[0].schedule()
+        self.total_schedule_time += time.time() - start_schedule_time
         
         if not scheduler_outputs.is_empty():
             finished_requests_ids = self.scheduler[
@@ -1420,11 +1425,15 @@ class LLMEngine:
                 finished_requests_ids=finished_requests_ids)
             
             #TODO::simulate_execute_time measure
-            output = self.simulate_execute_model(
-                csv, execute_model_req=execute_model_req)
             if execute:
+                start_execute_time = time.time()
                 self.model_executor.execute_model(
                     execute_model_req=execute_model_req)
+                self.total_execute_time += time.time() - start_execute_time
+                
+            output = self.simulate_execute_model(
+                csv, execute_model_req=execute_model_req)
+            
         else:
             output = []
             
@@ -1433,7 +1442,11 @@ class LLMEngine:
             scheduler_outputs.ignored_seq_groups, seq_group_metadata_list)
         
         if not self.has_unfinished_requests():
+            print(f'total_schedule_time : {self.total_schedule_time:.10f}')
+            print(f'total_execute_time : {self.total_execute_time:.10f}')
             self.model_executor.stop_remote_worker_execution_loop()
+        
+        self.do_log_stats(scheduler_outputs, output)
         
         return request_outputs, output, execute_model_req
 
@@ -1447,7 +1460,7 @@ class LLMEngine:
                 output_token_id, decoded_token = csv.get_next_token(parent_seq_id, 
                                                          len(seq_data.prompt_token_ids),
                                                          len(seq_data.output_token_ids))
-                
+                #print(output_token_id, decoded_token)
                 logprob = Logprob(logprob=float('inf'), decoded_token= decoded_token)
                 
                 sample = SequenceOutput(parent_seq_id=parent_seq_id,
@@ -1812,10 +1825,10 @@ class CSV_Assist:
         return len(self.df)
     
     def get_rows_id(self):
-        return self.df['Request Id'].to_list()
+        return self.df.index.to_list()
     
     def get_rows_input_text(self):
-        return self.df['Input_Content'].to_list()
+        return self.df['Input_Text'].to_list()
     
     def get_rows_output_text(self):
         return self.df['Output_Content'].to_list()
